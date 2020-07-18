@@ -159,7 +159,7 @@ circle {
 
       </div>
       <div class="legendtext"><b>Color = total cases: </b><div class="gradient">0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;500+</div></div>
-      <div><b><mark>Choose a Date: </b></mark><select id="selectButton2"></select></div>
+      <div style="float: right;"><b>Choose a Date: </b><select id="selectButton2"></select></div>
 
         <div id="container2"></div>
         <div class="button"><a href="#section-four"><span class="button_container"><span class="my_button">Let's Weight the Data</span></span></a></div>
@@ -521,6 +521,7 @@ circle {
           .attr("transform", "translate(" + (width2 / 2) + " ," + (height2 + margin2-20) + ")")
           .style("text-anchor", "middle")
           .style("font-weight", "bold")
+          .attr("fill", "#FF8333")
           .text("County Population");
 
         //Y axis label
@@ -531,6 +532,7 @@ circle {
           .attr("dy", "1em")
           .style("text-anchor", "middle")
           .style("font-weight", "bold")
+          .attr("fill", "green")
           .text("County GDP");
 
 
@@ -695,7 +697,7 @@ circle {
           
       svg3.append("path")
           .attr("class", "line_pop")
-          .style("stroke", "red")
+          .style("stroke", "#FF8333")
           .attr("d", valuelinePop(data));
 
       svg3.append("path")
@@ -762,7 +764,7 @@ circle {
         .on('mousemove', mousemove3)
 
         .on('mouseout', function(d) {
-          d3.selectAll(".line_pop").style("stroke", "red").style("stroke-width", 2);
+          d3.selectAll(".line_pop").style("stroke", "#FF8333").style("stroke-width", 2);
           d3.selectAll(".annPop").remove();
           div3.style('display', 'none');
         });
