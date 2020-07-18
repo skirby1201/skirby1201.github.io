@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Different Lenses: COVID-19 cases</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="normalize.css">
+  <link rel="stylesheet" href="main.css">
+  <script src="modernizr-2.6.2.min.js"></script>
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+
+  <style>
+
+path { 
+  stroke: steelblue;
+	stroke-width: 2;
+	fill: none;
+}
+
+.axis path,
+.axis line {
+	fill: none;
+	stroke: grey;
+	stroke-width: 1;
+	shape-rendering: crispEdges;
+}
+
+circle {
+    cursor: pointer;
+    fill: steelblue;
+}
+
+.gradient {
+    background: linear-gradient(to right, #000099, #FF0000);
+    width: 150px;
+    color: white;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tooltip {
+    position: absolute;
+    text-align: center;
+    max-width: 70px;
+    max-height: 100px;
+    padding: 8px;
+    border: none;
+    border-radius: 8px;
+    margin-top: -30px;
+    font: 10px sans-serif;
+    background    : black;
+    color         : white;
+    pointer-events: none;
+  }
+
+  .button {
+    text-align: center;
+  }
+
+  .legendtext {
+    text-align: center;
+  }
+    </style>
+</head>
+
+<body>
+
+<div id="top"></div>
+
+<nav class="site-navigation page-navigation">
+  <ul class="menu">
+    <li class="current"><a href="#top">Top</a></li>
+    <li><a href="#section-one">Intro</a></li>
+    <li><a href="#section-two">Base Case</a></li>
+    <li><a href="#section-three">Population & GDP</a></li>
+    <li><a href="#section-four">Weighted Data</a></li>
+    <li><a href="#section-five">Summary</a></li>
+  </ul>
+</nav>
+
+
+<div class="gd-section pad-large grey" style="background-image: url('pic.png')"> 
+  <div class="gd-center">
+    <div class="row">
+      <div class="col12">
+        <h1>Different Lenses</h1>
+        <h4>Examining the growth rate of COVID-19 from different perspectives.</h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="section-one" class="gd-section pad-large"> 
+  <div class="gd-center">
+    <div class="row"> 
+      <div class="col8">
+        <h2>Introduction</h2>
+        <p> The COVID-19 pandemic has created many shared experiences, both serious and tragic, and the not-so-serious 
+            (such as searching in vain for paper products, or informal Zoom meetups with friends). But one of the strongest shared experiences has been widespread reliance on data
+            and data visualization tools. Every day, countless people check the <a href="https://coronavirus.jhu.edu/map.html" target="_blank">Johns Hopkins coronavirus dashboard</a> to try to understand 
+            the trajectory of the virus.</p>
+
+        <p>This pandemic has affected millions in ways that are serious, and personal. As we examine virus-related data through different lenses, it is vital to remember that every point 
+            on a chart represents a human being. Every case is tragic and none is more or less important than another, on a human level.</p>
+
+        <p>Over the past four months, one of the most closely-followed trends has been the number of daily new cases. 
+           This data helps us form opinions to questions such as, "Is the curve flattening?", "Are we moving toward a second peak?", or "What is the relationship between easing 
+           restrictions, and the growth in cases, hospitalizations, and deaths?"</p> 
+
+        <p>No single chart can tell the whole story. In this narrative visualization project, we will examine case growth data through different lenses, to help shed new light on the virus' impact.</p>
+      
+        <a href="#section-two"><span class="button_container"><span class="my_button">Let's Get Started</span></span></a></div>
+    </div>
+  </div>
+</div>
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<div id="section-two" class="gd-section pad-large"> 
+  <div class="gd-center">
+    <div class="row"> 
+      <div class="col8">
+        <h2>The Base Case</h2>
+        <p>We begin by examining a chart whose shape we know by sight: the number of new U.S. virus cases by day. But does this widely-used
+          chart tell the entire story? To find out, we will combine county-level data on virus cases with county-level Population and Gross 
+          Domestic Product (GDP) data.
+        </p>
+        <p><b>INTERACT:</b><br>
+        Mouse over the chart to see daily new case counts. Then, click the "Take a Deeper Dive" button to get started.</p>
+
+    </div>
+      <div id="container1"></div>
+      <div class="button"><a href="#section-three"><span class="button_container"><span class="my_button">Take a Deeper Dive</span></span></a></div>
+    </div>
+
+  </div>
+
+</div>
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+<div id="section-three" class="gd-section pad-large"> 
+  <div class="gd-center">
+    <div class="row"> 
+      <div class="col8">
+        <h2>Population and GDP</h2>
+        <p>The U.S. is an incredibly diverse country. How do these differences influence the spread of COVID-19? 
+        Population density increases social interaction, and economic activity generally requires "mixing" both within, and between locations.</p>
+        <b>INTERACT:</b>
+          <li>Mouse over the chart to view the cumulative number of cases by county.</li>
+          <li>Then, change the date in the dropdown box below to see case progression through time.</li>
+          <li>Click the Weight the Data button to advance.</li>
+
+      </div>
+      <div class="legendtext"><b>Color = total cases: </b><div class="gradient">0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;500+</div></div>
+      <div><b><mark>Choose a Date: </b></mark><select id="selectButton2"></select></div>
+
+        <div id="container2"></div>
+        <div class="button"><a href="#section-four"><span class="button_container"><span class="my_button">Let's Weight the Data</span></span></a></div>
+
+  </div>
+
+</div>
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+<div id="section-four" class="gd-section pad-large"> 
+  <div class="gd-center">
+    <div class="row"> 
+      <div class="col8">
+        <h2>Weighted Data</h2>
+        <p>We observed above that there is a relationship between virus cases, population, and GDP. Now, let's adjust the familiar chart of new daily cases
+         to illustrate the impact of this relationship on how the virus has spread over time.</p>
+          <p>Here, we show the 7-day moving average of new daily cases through three lenses: Unweighted, Population-weighted, and GDP weighted. To adjust 
+            for differences in units and better illustrate the diverging path of the virus, values are indexed to 100 at the midpoint (4/12/2020) 
+            of the time series.
+          </p>
+          <p><b>INTERACT:</b><br>
+          Mouse over each line to explore the data, and the methodology used.</p>
+      </div>
+        <div id="container3"></div>
+        <div class="button"><a href="#section-five"><span class="button_container"><span class="my_button">What did we Learn?</span></span></a></div>
+
+    </div>
+  </div>
+</div>
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<div id="section-five" class="gd-section pad-large"> 
+  <div class="gd-center">
+    <div class="row"> 
+      <div class="col8">
+        <h2>Summary</h2>
+        <p>Examining familiar data from different perspectives often provides insights. We can observe that early outbreaks occured in densly-
+            populated areas, with high levels of economic activiy. Did this influence the speed and size of early policy actions? Does it help
+            explain why the stock market has rebounded so swiftly?</p>
+        
+        <p>Since mid-April, the pandemic's spread has begun to touch more and more communities, as shown by the spike in Population-weighted
+            new cases. Yet from a GDP-weighted perspective, the growth rate still has not returned to levels seen in early April.</p>
+      </div>
+      <div class="button"><a href="#section-one"><span class="button_container"><span class="my_button">Return to Top</span></span></a></div>
+
+    </div>
+  </div>
+</div>
+
+
+
+<div class="gd-section footer">
+  <h4>Notes</h4>
+  <p>This project was completed in July 2020 for the CS 498 Data Visualization course at the University of Illinois Urbana-Champaign, with the primary intent
+     of learning data visualization techniques using javascript and D3. Data from sources deemed reliable but not warranted to be accurate.</p>
+  <p>Data sources:
+      <li>Covid-19 data: <a href="https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv" target="_blank">Johns Hopkins</a></li>
+      <li>Population data: <a href="https://www.bea.gov/news/2019/local-area-gross-domestic-product-2018" target="_blank">U.S. Bureau of Economic Analysis</a></li>
+      <li>GDP data: <a href="https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-total.html#par_textimage_70769902" target="_blank">U.S. Census Bureau</a></li>
+  </p>
+  <p>Hat tip to the following examples referenced while learning D3:
+      <li> * Simple scrolling HTML navigation: <a href="https://www.turnwall.com/articles/adding-single-page-scrolling-navigation-to-your-site/" target="_blank">https://www.turnwall.com/articles/adding-single-page-scrolling-navigation-to-your-site/</a></li>
+      <li> * Simple line chart: <a href="http://embed.plnkr.co/wJDcZmkEzXaLVhuLZmcQ/" target="_blank">http://embed.plnkr.co/wJDcZmkEzXaLVhuLZmcQ/</a></li>
+      <li> * Scatterplot with animation: <a href="http://bl.ocks.org/WilliamQLiu/bd12f73d0b79d70bfbae" target="_blank">http://bl.ocks.org/WilliamQLiu/bd12f73d0b79d70bfbae</a></li>
+      <li> * Line plot with dropdown: <a href="https://www.d3-graph-gallery.com/graph/line_select.html" target="_blank">https://www.d3-graph-gallery.com/graph/line_select.html</a></li>
+      <li> * Updating bar chart with dropdown: <a href="http://bl.ocks.org/williaster/10ef968ccfdc71c30ef8" target="_blank">http://bl.ocks.org/williaster/10ef968ccfdc71c30ef8</a></li>
+      <li> * Header photo credit: <a href="https://unsplash.com/s/photos/glasses" target="_blank">George Evans on Unsplash</a></li>
+    
+      
+      
+
+    </div>
+
+</body>
+
+
+<!--END HTML-->
+
+
+<!--Chart 1-->
+
+<script>
+
+    var	margin = {top: 30, right: 20, bottom: 30, left: 60},
+        width = 600 - margin.left - margin.right,
+        height = 270 - margin.top - margin.bottom;
+    
+    var	parseDate = d3.time.format("%Y-%m-%d").parse;
+    var formatDate = d3.time.format("%Y-%m-%d")
+
+    var	x = d3.time.scale().range([0, width]);
+    var	y = d3.scale.linear().range([height, 0]);
+    
+    var	xAxis = d3.svg.axis().scale(x)
+        .orient("bottom").ticks(5);
+    
+    var	yAxis = d3.svg.axis().scale(y)
+        .orient("left").ticks(5,"0s");
+    
+    var	valueline = d3.svg.line()
+        .x(function(d) { return x(d.date); })
+        .y(function(d) { return y(d.cases); });
+
+    var	svg = d3.select("#container1")
+        .append("svg")
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+
+    d3.csv("cases2.csv", function(error, data) {
+        data.forEach(function(d) {
+          d.date = parseDate(d.date);
+          d.cases = +d.cases;
+        });
+    
+      x.domain(d3.extent(data, function(d) { return d.date; }));
+      y.domain([0, d3.max(data, function(d) { return d.cases; })]);
+
+      // Add annotation circle on "first peak"
+
+      svg.append("circle")
+        .attr("cx", x(parseDate("2020-04-24")))
+        .attr("cy", y(36496))
+        .attr("r", 20)
+        .style("fill", "purple")
+        .style("fill-opacity", 0.4);
+
+      svg.append("text")
+        .attr("x", x(parseDate("2020-04-24"))-160)
+        .attr("y", y(36496))
+        .attr("font-family", "sans-serif").attr("font-size", "12px").attr("fill", "purple")
+        .text("Peak of first wave-------->");
+
+
+        svg.append("path")
+            .attr("class", "line")
+            .attr("d", valueline(data));
+            
+        svg.selectAll("circle")
+            .data(data)
+            .enter()
+            .append("circle")
+            .attr("r", 5)
+            .style("opacity", 0)
+          .attr("cx", function(d) {
+            return x(d.date)
+          })
+          .attr("cy", function(d) {
+            return y(d.cases)
+          })
+          
+          .on('mouseover', mouseover)
+          .on('mousemove', mousemove)
+          .on('mouseout', mouseout);
+          
+            
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis);
+    
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxis);
+
+        // add chart title
+        var charttitle = svg.append("g")
+          .attr('transform', 'translate(' + [margin.left - 10, margin.top] + ')');
+
+        charttitle.append('text')
+          .text("Daily New Cases (U.S.)")
+          .attr('transform', 'translate(' + [width / 2, - margin.top / 2] + ')')
+          .attr({
+            'text-anchor': 'middle',
+            'font-size': '1.5em',
+            fill: 'black',
+        });
+
+        //X axis label - don't need; date is obvious
+
+        //Y axis label
+        svg.append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 0 - margin.left)
+          .attr("x",0 - (height / 2))
+          .attr("dy", "1em")
+          .style("text-anchor", "middle")
+          .style("font-weight", "bold")
+          .text("# of new cases");
+
+
+        // tooltips
+        var div = d3.select('#container1').append('div')
+          .attr('class', 'tooltip')
+          .style('display', 'none');
+
+        function mouseover(){
+          div.style('display', 'inline');
+        }
+
+        function mousemove(){
+          var d = d3.select(this).data()[0]
+
+          div
+            .html(formatDate(d.date) + '<hr/>' + d.cases)
+            .style('left', (d3.event.pageX - 34) + 'px')
+            .style('top', (d3.event.pageY - 34) + 'px');
+        }
+
+        function mouseout(){
+          div.style('display', 'none');
+        }
+            
+    });
+    
+    </script>
+
+
+<!--Chart 2-->
+
+    <script>
+
+    var parameters = ["Apr_2", "May_2", "Jun_2", "Jul_2"]
+
+    var annotationData = {"Apr_2": {"x": 53100, "y": 9860844, "line1": "Early outbreaks occured in highly populated,", "line2": "high-GDP counties, aside from localized",
+        "line3": "hotspots, such as Louisiana."},
+      "May_2": {"x": 11284, "y": 205452, "line1": "In May, a large spike of cases occurred", "line2": "in rural Trousdale County, Tennessee",
+        "line3": "following an outbreak in a prison."},
+      "Jun_2": {"x": 625, "y": 77483, "line1": "By June, virus cases had reached", "line2": "even remote areas such as Harding, NM",
+        "line3": "with a population of 625."},
+      "Jul_2": {"x": 14617, "y": 38050876, "line1": "Despite dense population and high GDP", "line2": "some areas of Virginia have avoided large",
+        "line3": "outbreaks through effective social distancing."}   }
+
+    var width2 = 460;
+    var height2 = 260;
+    var margin2 = 70;
+
+    var colorScale = d3.scale.linear().domain([1,500])
+        .interpolate(d3.interpolate)
+        .range([d3.rgb("#000099"), d3.rgb('#FF0000')]);
+
+    var x2 = d3.scale.log().range([0,width2])
+        .domain([600, 11000000]);
+    var y2 = d3.scale.log().range([height2,0])
+        .domain([20000,800000000]);
+
+    var xAxis2 = d3.svg.axis().scale(x2)
+        .orient("bottom").ticks(5, ",.1s").tickSize(10,0);
+
+    var yAxis2 = d3.svg.axis().scale(y2)
+        .orient("left").ticks(5, ",.1s").tickSize(10,0);
+
+    d3.select("#selectButton2")
+      .selectAll("myOptions")
+      .data(parameters)
+      .enter()
+      .append("option")
+      .text(function (d) {return d; })
+
+    var c2svg = d3.select("#container2")
+        .append("svg")
+            .attr("width", width2 + margin2 + margin2)
+            .attr("height", height2 + margin2 + margin2)
+        .append("g")
+            .attr("transform", "translate(" + margin2 + "," + margin2 + ")");
+
+    d3.csv("scatter2.csv", function(error, data) {
+        data.forEach(function(d) {
+            d.id = +d.id;
+            d.label = d.label;
+            d.gdp = +d.gdp;
+            d.pop = +d.pop;
+            d.Apr_2 = +d.Apr_2;
+            d.May_2 = +d.May_2;
+            d.Jun_2 = +d.Jun_2;
+            d.Jul_2 = +d.Jul_2;
+            // initialize cases to Apr 2 values
+            d.cases = +d.Apr_2;
+        });
+
+        // initialize annotation to Apr 2
+        c2svg.append("circle")
+            .attr("id", "c2annotation")
+            .attr("cx", x2(53100))
+            .attr("cy", y2(9860844))
+            .attr("r", 20)
+            .style("fill", "purple").style("opacity", ".5");
+        c2svg.append("text")
+            .attr("id", "c2AnnText")
+            .attr("x", 275)
+            .attr("y", 175)
+            .attr("dy", 0)
+            .attr("font-family", "sans-serif").attr("font-size", "12px").attr("fill", "purple")
+            .text(annotationData["Apr_2"]["line1"]);
+        c2svg.append("text")
+            .attr("id", "c2AnnText")
+            .attr("x", 275)
+            .attr("y", 175)
+            .attr("dy", 12)
+            .attr("font-family", "sans-serif").attr("font-size", "12px").attr("fill", "purple")
+            .text(annotationData["Apr_2"]["line2"]);
+        c2svg.append("text")
+            .attr("id", "c2AnnText")
+            .attr("x", 275)
+            .attr("y", 175)
+            .attr("dy", 24)
+            .attr("font-family", "sans-serif").attr("font-size", "12px").attr("fill", "purple")
+            .text(annotationData["Apr_2"]["line3"]);
+
+
+        var scatter = c2svg.selectAll("circle")
+            .data(data)
+            .enter()
+            .append("circle")
+            .attr("cx", function(d) {
+                return x2(d.pop);
+            })
+            .attr("cy", function(d) {
+                return y2(d.gdp);
+            })
+            .attr("r", 2)
+            .style("fill", function(d) {
+                return colorScale(d.Apr_2);
+            })
+
+            .on('mouseover', mouseover2)
+            .on('mousemove', mousemove2)
+            .on('mouseout', mouseout2);
+
+
+
+        //X axis
+        c2svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height2 +")")
+            .call(xAxis2);
+
+        //Y axis
+        c2svg.append("g")
+            .attr("class", "y axis")
+            .attr("transform", "translate(0" - margin2 +",0)")
+            .call(yAxis2);
+        
+
+        c2svg.append('text')
+          .text("Counties by Population and GDP")
+          .attr('transform', 'translate(' + [width / 2, - margin.top / 2] + ')')
+          .attr({
+            'text-anchor': 'middle',
+            'font-size': '1.5em',
+            fill: 'steelblue',
+        });
+
+        //X axis label
+        c2svg.append("text")
+          .attr("transform", "translate(" + (width2 / 2) + " ," + (height2 + margin2-20) + ")")
+          .style("text-anchor", "middle")
+          .style("font-weight", "bold")
+          .text("County Population");
+
+        //Y axis label
+        c2svg.append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 0 - margin.left)
+          .attr("x",0 - (height / 2))
+          .attr("dy", "1em")
+          .style("text-anchor", "middle")
+          .style("font-weight", "bold")
+          .text("County GDP");
+
+
+        // tooltips
+        var div2 = d3.select('#container2').append('div')
+          .attr('class', 'tooltip')
+          .style('display', 'none');
+
+        function mouseover2(){
+          div2.style('display', 'inline');
+        }
+
+        function mousemove2(){
+          var d = d3.select(this).data()[0]
+          div2
+            .html(d.label + '<hr/>' + d.cases)
+            .style('left', (d3.event.pageX - 34) + 'px')
+            .style('top', (d3.event.pageY - 54) + 'px')
+        }
+
+        function mouseout2(){
+          div2.style('display', 'none');
+        }
+
+        // function to update the chart on dropdown select
+        function update(selectedGroup) {
+          var dataFilter = data.map(function(d) { return {label: d.label, pop: d.pop, gdp: d.gdp, cases: d[selectedGroup]} })
+
+        scatter
+          .data(dataFilter)
+          .transition()
+          .duration(400)
+          .style("fill", function(d) {
+            return colorScale(d.cases);
+          })
+        
+        //Update Annotations
+
+        d3.select("#c2annotation").remove();
+        d3.selectAll("#c2AnnText").remove();
+        c2svg.append("circle")
+          .attr("id", "c2annotation")
+          .attr("cx", x2(annotationData[selectedGroup]["x"]))
+          .attr("cy", y2(annotationData[selectedGroup]["y"]))
+           .attr("r", 20)
+          .style("fill", "purple").style("opacity", ".5");
+        c2svg.append("text")
+          .attr("id", "c2AnnText")
+          .attr("x", 275)
+          .attr("y", 175)
+          .attr("dy", 0)
+          .attr("font-family", "sans-serif").attr("font-size", "12px").attr("fill", "purple")
+          .text(annotationData[selectedGroup]["line1"]);
+        c2svg.append("text")
+          .attr("id", "c2AnnText")
+          .attr("x", 275)
+          .attr("y", 175)
+          .attr("dy", 12)
+          .attr("font-family", "sans-serif").attr("font-size", "12px").attr("fill", "purple")
+          .text(annotationData[selectedGroup]["line2"]);
+        c2svg.append("text")
+          .attr("id", "c2AnnText")
+          .attr("x", 275)
+          .attr("y", 175)
+          .attr("dy", 24)
+          .attr("font-family", "sans-serif").attr("font-size", "12px").attr("fill", "purple")
+          .text(annotationData[selectedGroup]["line3"]);
+        
+
+        };
+
+        // set default value to April on start
+        d3.select("#selectButton2").property("value", "Apr_2");
+
+        // Update dot colors when dropdown value changes...
+        d3.select("#selectButton2").on("change", function(d) {
+          var selectedGroup = d3.select(this).property("value")
+          update(selectedGroup)
+        })
+
+    });
+
+  </script>
+
+
+<!--Chart 3-->
+
+<script>
+
+    //TBD:
+    // write conclusion and references
+    // upload to git and test
+    // write essay.
+
+  var margin3 = {top: 30, right: 20, bottom: 30, left: 60},
+      width3 = 600 - margin.left - margin.right,
+      height3 = 270 - margin.top - margin.bottom;
+  
+  var parseDate3 = d3.time.format("%Y-%m-%d").parse;
+  var formatDate3 = d3.time.format("%Y-%m-%d")
+
+  var x3 = d3.time.scale().range([0, width3]);
+  var y3 = d3.scale.linear().range([height3, 0]);
+  
+  var xAxis3 = d3.svg.axis().scale(x3)
+      .orient("bottom").ticks(5);
+  
+  var yAxis3 = d3.svg.axis().scale(y3)
+      .orient("left").ticks(5,"0s");
+
+  var valuelineUW = d3.svg.line()
+      .x(function(d) { return x3(d.date); })
+      .y(function(d) { return y3(d.Unweighted); });
+
+  var valuelinePop = d3.svg.line()
+      .x(function(d) { return x3(d.date); })
+      .y(function(d) { return y3(d.Pop_weighted); });
+
+  var valuelineGDP = d3.svg.line()
+      .x(function(d) { return x3(d.date); })
+      .y(function(d) { return y3(d.GDP_weighted); });
+
+  var svg3 = d3.select("#container3")
+      .append("svg")
+        .attr("width", width3 + margin3.left + margin3.right)
+        .attr("height", height3 + margin3.top + margin3.bottom)
+      .append("g")
+        .attr("transform", "translate(" + margin3.left + "," + margin3.top + ")");
+
+  d3.csv("c3.csv", function(error, data) {
+      data.forEach(function(d) {
+        d.date = parseDate(d.date);
+        d.Unweighted = +d.uw412;
+        d.Pop_weighted = +d.pop412;
+        d.GDP_weighted = +d.gdp412;
+      });
+  
+      x3.domain(d3.extent(data, function(d) { return d.date; }));
+      y3.domain([0, d3.max(data, function(d) { return d.Pop_weighted; })]);
+
+      svg3.append("line")
+        .attr("x1", x3(parseDate("2020-04-12")))
+	    .attr("x2", x3(parseDate("2020-04-12")))
+	    .attr("y1", 100)
+	    .attr("y2", height3)
+	    .attr("stroke-width", 4)
+	    .attr("stroke", "black")
+	    .attr("stroke-dasharray", "8,8")
+
+      svg3.append("line")
+        .attr("x1", 0)
+	    .attr("x2", x3(parseDate("2020-04-12")))
+	    .attr("y1", y3(100))
+	    .attr("y2", y3(100))
+	    .attr("stroke-width", 4)
+	    .attr("stroke", "black")
+	    .attr("stroke-dasharray", "8,8")
+
+      svg3.append("path")
+          .attr("class", "line_uw")
+          .attr("d", valuelineUW(data));
+          
+      svg3.append("path")
+          .attr("class", "line_pop")
+          .style("stroke", "red")
+          .attr("d", valuelinePop(data));
+
+      svg3.append("path")
+          .attr("class", "line_gdp")
+          .style("stroke", "green")
+          .attr("d", valuelineGDP(data));
+
+      svg3.selectAll("circleUW")
+          .data(data)
+          .enter()
+          .append("circle")
+          .attr("r", 5)
+          .style("opacity", 0)
+        .attr("cx", function(d) {
+          return x3(d.date)
+        })
+        .attr("cy", function(d) {
+          return y3(d.Unweighted)
+        })
+        
+        .on('mouseover', function(d) {
+          d3.selectAll(".line_uw").style("stroke", "#ffd533").style("stroke-width", 4);
+          div3.style('display', 'inline');
+          svg3.append("text")
+            .attr("class", "annUW")
+            .attr("x", 40)
+            .attr("y", 60)
+            .attr("font-family", "sans-serif").attr("font-size", "12px").attr("fill", "purple")
+            .text("Unweighted case counts.");
+        })
+
+        .on('mousemove', mousemove3)
+
+        .on('mouseout', function(d) {
+          d3.selectAll(".line_uw").style("stroke", "steelblue").style("stroke-width", 2);
+          d3.selectAll(".annUW").remove();
+          div3.style('display', 'none');
+        });
+      
+      svg3.selectAll("circlePop")
+          .data(data)
+          .enter()
+          .append("circle")
+          .attr("r", 5)
+          .style("opacity", 0)
+        .attr("cx", function(d) {
+          return x3(d.date)
+        })
+        .attr("cy", function(d) {
+          return y3(d.Pop_weighted)
+        })
+        
+        .on('mouseover', function(d) {
+          d3.selectAll(".line_pop").style("stroke", "#ffd533").style("stroke-width", 4);
+          div3.style('display', 'inline');
+          svg3.append("text")
+            .attr("class", "annPop")
+            .attr("x", 40)
+            .attr("y", 60)
+            .attr("font-family", "sans-serif").attr("font-size", "12px").attr("fill", "purple")
+            .text("Number of cases multipled by each county's share of total population.");
+        })
+
+        .on('mousemove', mousemove3)
+
+        .on('mouseout', function(d) {
+          d3.selectAll(".line_pop").style("stroke", "red").style("stroke-width", 2);
+          d3.selectAll(".annPop").remove();
+          div3.style('display', 'none');
+        });
+
+      svg3.selectAll("circleGDP")
+          .data(data)
+          .enter()
+          .append("circle")
+          .attr("r", 5)
+          .style("opacity", 0)
+        .attr("cx", function(d) {
+          return x3(d.date)
+        })
+        .attr("cy", function(d) {
+          return y3(d.GDP_weighted)
+        })
+        
+        .on('mouseover', function(d) {
+          d3.selectAll(".line_gdp").style("stroke", "#ffd533").style("stroke-width", 4);
+          div3.style('display', 'inline');
+          svg3.append("text")
+            .attr("class", "annGDP")
+            .attr("x", 40)
+            .attr("y", 60)
+            .attr("font-family", "sans-serif").attr("font-size", "12px").attr("fill", "purple")
+            .text("Number of cases multipled by each county's share of U.S. GDP.");
+        })
+
+        .on('mousemove', mousemove3)
+
+        .on('mouseout', function(d) {
+          d3.selectAll(".line_gdp").style("stroke", "green").style("stroke-width", 2);
+          div3.style('display', 'none');
+          d3.selectAll(".annGDP").remove();
+
+        });
+          
+      svg3.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height3 + ")")
+          .call(xAxis3);
+  
+      svg3.append("g")
+          .attr("class", "y axis")
+          .call(yAxis3);
+
+      // add tooltip
+      var tooltip3 = svg3.append("g")
+        .attr('transform', 'translate(' + [margin3.left - 10, margin3.top] + ')');
+
+      tooltip3.append('text')
+        .text("Weighted by GDP & Population")
+        .attr('transform', 'translate(' + [width3 / 2, - margin3.top / 2] + ')')
+        .attr({
+          'text-anchor': 'middle',
+          'font-size': '1.5em',
+          fill: 'steelblue',
+      });
+
+
+      //Y axis label
+      svg3.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - margin3.left)
+        .attr("x",0 - (height3 / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .style("font-weight", "bold")
+        .text("Weighted Average New Cases");
+
+      // tooltips
+      var div3 = d3.select('#container3').append('div')
+        .attr('class', 'tooltip')
+        .style('display', 'none');
+
+      function mousemove3(){
+        var d = d3.select(this).data()[0]
+
+      f = d3.format(".1f");
+
+        div3
+          .html(formatDate(d.date) + '<hr/>' + "Unweighted: " + f(d.Unweighted) + "<br>" + "Pop: " + f(d.Pop_weighted) + "<br>"+"GDP: " + f(d.GDP_weighted))
+          .style('left', (d3.event.pageX - 34) + 'px')
+          .style('top', (d3.event.pageY - 100) + 'px');
+      }
+
+      // legend
+      svg3.append("circle").attr("cx",300).attr("cy",185).attr("r", 6).style("fill", "red");
+      svg3.append("text").attr("x", 310).attr("y", 185).text("Population").style("font-size", "10px");
+      svg3.append("circle").attr("cx",370).attr("cy",185).attr("r", 6).style("fill", "steelblue");
+      svg3.append("text").attr("x", 380).attr("y", 185).text("Unweighted").style("font-size", "10px").attr("alignment-baseline","middle");
+      svg3.append("circle").attr("cx",450).attr("cy",185).attr("r", 6).style("fill", "green");
+      svg3.append("text").attr("x", 460).attr("y", 185).text("GDP").style("font-size", "10px").attr("alignment-baseline","middle");
+          
+  });
+  
+  </script>
+
+</html>
